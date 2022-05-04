@@ -1,41 +1,64 @@
+import React from 'react';
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
-import icon from '../../assets/icon.svg';
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  Input,
+  TextField,
+} from '@material-ui/core';
+// import icon from '../../assets/icon.svg';
 import './App.css';
 
-const Hello = () => {
+const AddWord = () => {
+  const [wordsList, setWordsList] = React.useState([]);
+  const [word, setWord] = React.useState('');
+  const [description, setDescription] = React.useState('');
+
   return (
-    <div>
-      <div className="Hello">
-        <img width="200px" alt="icon" src={icon} />
-      </div>
-      <h1>electron-react-boilerplate</h1>
-      <div className="Hello">
-        <a
-          href="https://electron-react-boilerplate.js.org/"
-          target="_blank"
-          rel="noreferrer"
+    <>
+      <FormControl>
+        <TextField
+          label="Дума"
+          variant="outlined"
+          color="secondary"
+          style={{ margin: '5px' }}
+          value={word}
+          onChange={(event) => setWord(event.target.value)}
+        />
+        <TextField
+          label="Значение"
+          variant="outlined"
+          color="secondary"
+          style={{ margin: '5px' }}
+          value={description}
+          onChange={(event) => setDescription(event.target.value)}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          style={{ margin: '5px' }}
+          onClick={() => {
+            const updatedList = [...wordsList];
+            updatedList.push({ word, description });
+            setWordsList(updatedList);
+          }}
         >
-          <button type="button">
-            <span role="img" aria-label="books">
-              📚
-            </span>
-            Read our docs
-          </button>
-        </a>
-        <a
-          href="https://github.com/sponsors/electron-react-boilerplate"
-          target="_blank"
-          rel="noreferrer"
+          Добави дума
+        </Button>
+      </FormControl>
+      {wordsList && wordsList.length > 0 ? (
+        <div
+          style={{ margin: '5px', border: '1px solid black', padding: '5px' }}
         >
-          <button type="button">
-            <span role="img" aria-label="books">
-              🙏
-            </span>
-            Donate
-          </button>
-        </a>
-      </div>
-    </div>
+          {wordsList.map((word) => (
+            <div style={{ margin: '5px', padding: '5px' }}>
+              {word.word} - {word.description}
+            </div>
+          ))}
+        </div>
+      ) : null}
+    </>
   );
 };
 
@@ -43,7 +66,7 @@ export default function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Hello />} />
+        <Route path="/" element={<AddWord />} />
       </Routes>
     </Router>
   );
